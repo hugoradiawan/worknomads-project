@@ -2,14 +2,15 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework import status
 from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate
 from ...shared.responses import BaseResponse
 from ...shared.server_enum import ServerID
+from rest_framework.permissions import AllowAny
 
 User = get_user_model()
 
 
 class LoginView(TokenObtainPairView):
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         email_or_username = request.data.get("email") or request.data.get("username")
         password = request.data.get("password")
