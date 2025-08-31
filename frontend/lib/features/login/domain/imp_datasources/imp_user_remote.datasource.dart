@@ -1,0 +1,56 @@
+import 'package:dio/dio.dart';
+import 'package:frontend/core/blocs/http_client/http_client.bloc.dart';
+import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
+    show LocalLoginResponseSave;
+import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart';
+import 'package:frontend/core/usecase.dart' show BaseResponse;
+import 'package:frontend/features/login/data/datasources/user_remote.datasource.dart'
+    show UserRemoteDataSource;
+import 'package:frontend/features/login/domain/params/login.params.dart'
+    show LoginParams;
+import 'package:frontend/features/login/domain/responses/login.response.dart'
+    show LoginResponse;
+
+class UserRemoteDataSourceImpl implements UserRemoteDataSource {
+  static UserRemoteDataSourceImpl? _instance;
+
+  UserRemoteDataSourceImpl._internal();
+
+  factory UserRemoteDataSourceImpl() {
+    _instance ??= UserRemoteDataSourceImpl._internal();
+    return _instance!;
+  }
+
+  @override
+  Future<BaseResponse<LoginResponse>> login(LoginParams params) async {
+    try {
+      final Response<dynamic>? response = await HttpBloc.i?.client.post(
+        '/login',
+        data: params.toJson(),
+      );
+      if (response?.statusCode == 200) {
+        final LoginResponse? loginResponse = LoginResponse.fromJson(
+          response!.data,
+        );
+        LocalStorageBloc.i?.add(LocalLoginResponseSave(loginResponse!));
+        return loginResponse!;
+      } else {
+        return BaseResponse<LoginResponse>(
+          data: null,
+          message: response?.data['message'],
+          statusCode: response?.statusCode,
+          errorCode: response?.data['error_code'],
+          serverId: response?.data['server_id'],
+          success: response?.data['success'],
+        );
+      }
+    } catch (e) {
+      return BaseResponse<LoginResponse>(
+        data: null,
+        message: e.toString(),
+        statusCode: 500,
+        success: false,
+      );
+    }
+  }
+}

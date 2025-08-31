@@ -120,8 +120,8 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-frontend/build/
-frontend/coverage/
+**/build/
+**/coverage/
 
 # Symbolication related
 app.*.symbols
@@ -130,6 +130,10 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-frontend/android/app/debug/
-frontend/android/app/profile/
-frontend/android/app/release/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+!frontend/lib/
+!frontend/assets/
+!frontend/ios/
+!frontend/android/
