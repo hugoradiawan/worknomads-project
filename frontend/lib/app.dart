@@ -2,7 +2,7 @@ import 'package:flutter/material.dart'
     show StatelessWidget, Widget, ColorScheme, Colors, ThemeData, MaterialApp;
 import 'package:frontend/core/widgets/infrastructure_provider.dart'
     show InfrastructureProvider;
-import 'package:frontend/features/login/presentation/pages/register.page.dart' show RegisterPage;
+import 'package:frontend/features/home/presentation/pages/home.page.dart' show HomePage;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const RegisterPage(),
+      home: const HomePage(),
     ),
   );
 }
