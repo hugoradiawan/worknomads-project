@@ -4,10 +4,18 @@ import 'package:frontend/core/usecase.dart' show Failure, BaseResponse;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
 import 'package:frontend/features/login/domain/usecases/login.usecase.dart';
+import 'package:frontend/features/login/domain/usecases/register.usecase.dart'
+    show RegisterUseCase;
 import 'package:frontend/shared/blocs/user.event.dart'
-    show UserEvent, LoginFetch;
+    show UserEvent, LoginFetch, RegisterFetch;
 import 'package:frontend/shared/blocs/user.state.dart'
-    show UserState, UserInitial, LoginFetched, LoginFailed;
+    show
+        UserState,
+        UserInitial,
+        LoginFetched,
+        LoginFailed,
+        RegisterFetched,
+        RegisterFailed;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<({Failure? fail, BaseResponse<LoginResponse> ok})>? _loginStream;
@@ -28,6 +36,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           emit(LoginFetched(result.ok.data?.user, result.ok.data?.token));
         } else {
           emit(const LoginFailed());
+        }
+      }
+    });
+    on<RegisterFetch>((event, emit) async {
+      await for (final result in RegisterUseCase().call(event.params)) {
+        if (result.fail == null &&
+            result.ok.success &&
+            result.ok.data != null) {
+          emit(RegisterFetched());
+        } else {
+          emit(const RegisterFailed());
         }
       }
     });

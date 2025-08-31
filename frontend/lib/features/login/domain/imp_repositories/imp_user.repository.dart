@@ -14,6 +14,8 @@ import 'package:frontend/features/login/domain/params/login.params.dart'
 import 'package:frontend/features/login/domain/params/register.params.dart';
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
+import 'package:frontend/features/login/domain/responses/register.response.dart'
+    show RegisterResponse;
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource userRemoteDataSource;
@@ -46,7 +48,10 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<BaseResponse<LoginResponse>> register(RegisterParams params) {
-    throw UnimplementedError();
+  Stream<BaseResponse<RegisterResponse>> register(
+    RegisterParams params,
+  ) async* {
+    yield await userLocalDataSource.register(params);
+    yield await userRemoteDataSource.register(params);
   }
 }

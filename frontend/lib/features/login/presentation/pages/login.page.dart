@@ -1,7 +1,26 @@
-import 'package:flutter/material.dart' show StatelessWidget, Scaffold, Widget, Text, EdgeInsets, TextEditingController, InputDecoration, SizedBox, AppBar, MainAxisAlignment, OutlineInputBorder, TextField, ElevatedButton, Column, Padding;
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider, BlocSelector, BlocBuilder;
-import 'package:frontend/features/login/presentation/blocs/login.cubit.dart' show LoginCubit;
-import 'package:frontend/features/login/presentation/blocs/login.state.dart' show LoginState;
+import 'package:flutter/material.dart'
+    show
+        StatelessWidget,
+        Scaffold,
+        Widget,
+        Text,
+        EdgeInsets,
+        TextEditingController,
+        InputDecoration,
+        SizedBox,
+        AppBar,
+        MainAxisAlignment,
+        OutlineInputBorder,
+        TextField,
+        ElevatedButton,
+        Column,
+        Padding;
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocProvider, BlocSelector, BlocBuilder;
+import 'package:frontend/features/login/presentation/blocs/login_cubit/login.cubit.dart'
+    show LoginCubit;
+import 'package:frontend/features/login/presentation/blocs/login_cubit/login.state.dart'
+    show LoginState;
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

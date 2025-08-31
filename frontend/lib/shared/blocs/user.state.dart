@@ -24,3 +24,11 @@ class LoginFetched extends UserState {
 class LoginFailed extends UserState {
   const LoginFailed() : super(user: null, token: null);
 }
+
+class RegisterFetched extends UserState {
+  const RegisterFetched() : super(user: null, token: null);
+}
+
+class RegisterFailed extends UserState {
+  const RegisterFailed() : super(user: null, token: null);
+}

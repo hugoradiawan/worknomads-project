@@ -1,15 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart';
 import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
-    show LocalLoginResponseSave;
+    show LocalLoginResponseSave, LocalRegisterResponseSave;
 import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart';
 import 'package:frontend/core/usecase.dart' show BaseResponse;
 import 'package:frontend/features/login/data/datasources/user_remote.datasource.dart'
     show UserRemoteDataSource;
 import 'package:frontend/features/login/domain/params/login.params.dart'
     show LoginParams;
+import 'package:frontend/features/login/domain/params/register.params.dart' show RegisterParams;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
+import 'package:frontend/features/login/domain/responses/register.response.dart' show RegisterResponse;
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   static UserRemoteDataSourceImpl? _instance;
@@ -53,4 +55,38 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       );
     }
   }
+
+  @override
+  Future<BaseResponse<RegisterResponse>> register(RegisterParams params) async {
+    try {
+      final Response<dynamic>? response = await HttpBloc.i?.client.post(
+        '/register',
+        data: params.toJson(),
+      );
+      if (response?.statusCode == 200) {
+        final RegisterResponse? registerResponse = RegisterResponse.fromJson(
+          response!.data,
+        );
+        LocalStorageBloc.i?.add(LocalRegisterResponseSave(registerResponse!));
+        return registerResponse!;
+      } else {
+        return BaseResponse<RegisterResponse>(
+          data: null,
+          message: response?.data['message'],
+          statusCode: response?.statusCode,
+          errorCode: response?.data['error_code'],
+          serverId: response?.data['server_id'],
+          success: response?.data['success'],
+        );
+      }
+    } catch (e) {
+      return BaseResponse<RegisterResponse>(
+        data: null,
+        message: e.toString(),
+        statusCode: 500,
+        success: false,
+      );
+    }
+  }
+
 }
