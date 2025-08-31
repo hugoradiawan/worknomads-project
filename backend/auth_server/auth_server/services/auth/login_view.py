@@ -12,22 +12,18 @@ User = get_user_model()
 class LoginView(TokenObtainPairView):
     permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
-        email_or_username = request.data.get("email") or request.data.get("username")
+        email = request.data.get("email")
         password = request.data.get("password")
 
-        if not email_or_username or not password:
+        if not email or not password:
             return BaseResponse.error(
                 code_id=3003,
-                message="Email/username and password are required",
+                message="Email and password are required",
                 error_code="MISSING_CREDENTIALS",
                 server_id=ServerID.AUTH_SERVER,
                 status_code=status.HTTP_400_BAD_REQUEST,
             )
-        user = None
-        if "@" in email_or_username:
-            user = User.objects.get_user_by_email(email_or_username)  # type: ignore[attr-defined]
-        else:
-            user = User.objects.get_user_by_username(email_or_username)  # type: ignore[attr-defined]
+        user = User.objects.get_user_by_email(email)  # type: ignore[attr-defined]
 
         if not user:
             return BaseResponse.error(
