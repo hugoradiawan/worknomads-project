@@ -70,8 +70,8 @@ class LoginView(TokenObtainPairView):
 
                 return BaseResponse.success(
                     data={
-                        **user_data,
-                        **response.data,
+                        'user': user_data,
+                        'token': response.data,
                     },
                     message="Token obtained successfully",
                     server_id=ServerID.AUTH_SERVER,
