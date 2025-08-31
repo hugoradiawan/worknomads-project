@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart' show Equatable;
 
 abstract class UseCase<T, P extends Params> {
-  Future<({Failure? fail, BaseResponse<T> ok})> call(P params);
+  Stream<({Failure? fail, BaseResponse<T> ok})> call(P params);
 }
 
 abstract class Params extends Equatable {}

@@ -1,17 +1,9 @@
-import 'package:frontend/shared/data/model.dart' show UserModel;
+import 'package:frontend/features/login/domain/params/login.params.dart' show LoginParams;
 
 abstract class UserEvent {}
 
-class OnLocalFetchUserData extends UserEvent {
-  final UserModel? user;
+class LoginFetch extends UserEvent {
+  final LoginParams params;
 
-  OnLocalFetchUserData(this.user);
+  LoginFetch(this.params);
 }
-
-class OnRemoteFetchUserData extends UserEvent {
-  final UserModel? user;
-
-  OnRemoteFetchUserData(this.user);
-}
-
-class OnRemoteLoadingUserData extends UserEvent {}

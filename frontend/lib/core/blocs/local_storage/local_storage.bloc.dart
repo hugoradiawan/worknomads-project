@@ -5,17 +5,22 @@ import 'package:bloc_concurrency/bloc_concurrency.dart'
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, BlocProvider;
 import 'package:frontend/core/blocs/local_storage/events/local_storage.event.dart'
     show LocalStorageEvent, LocalStorageInit;
-import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart' show SaveUser, FetchUser;
+import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
+    show LocalLoginResponseFetch, LocalLoginResponseSave;
+import 'package:frontend/core/blocs/local_storage/states/local_login_response.state.dart'
+    show
+        LocalLoginResponseFetched,
+        LocalLoginResponseLoading,
+        LocalLoginResponseSaved;
 import 'package:frontend/core/blocs/local_storage/states/local_storage.state.dart'
     show
         LocalStorageState,
         LocalStorageInitial,
         LocalStorageReady,
         LocalStorageSettingUp;
-import 'package:frontend/core/blocs/local_storage/states/local_user.state.dart'
-    show LocalStorageUserSaved, LoadingUser, UserFetched;
 import 'package:frontend/core/layered_context.dart' show LayeredContext;
-import 'package:frontend/shared/data/model.dart' show UserModel;
+import 'package:frontend/features/login/domain/responses/login.response.dart'
+    show LoginResponse;
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferencesWithCache, SharedPreferencesWithCacheOptions;
 
@@ -35,18 +40,21 @@ class LocalStorageBloc extends Bloc<LocalStorageEvent, LocalStorageState> {
   }
 
   LocalStorageBloc() : super(LocalStorageInitial()) {
-    add(LocalStorageInit());
-    on<SaveUser>((event, emit) async {
-      await waitForInitialization();
-      await prefs.setString('user', json.encode(event.user.toJson()));
-      emit(LocalStorageUserSaved());
+    on<LocalLoginResponseSave>((event, emit) async {
+      await prefs.setString(
+        'loginResponse',
+        json.encode(event.response.toJson()),
+      );
+      emit(LocalLoginResponseSaved());
     }, transformer: concurrent());
-    on<FetchUser>((event, emit) async {
-      emit(LoadingUser());
-      await waitForInitialization();
-      final String? local = prefs.getString('user');
-      if (local == null) return emit(UserFetched(null));
-      emit(UserFetched(UserModel.fromJson(json.decode(local))));
+    on<LocalLoginResponseFetch>((event, emit) async {
+      emit(LocalLoginResponseLoading());
+      final String? local = prefs.getString('loginResponse');
+      if (local == null) return emit(LocalLoginResponseFetched(null));
+      final LoginResponse? response = LoginResponse.fromJson(
+        json.decode(local),
+      );
+      emit(LocalLoginResponseFetched(response));
     }, transformer: concurrent());
     on<LocalStorageInit>((event, emit) async {
       emit(LocalStorageSettingUp());
@@ -55,14 +63,6 @@ class LocalStorageBloc extends Bloc<LocalStorageEvent, LocalStorageState> {
       );
       emit(LocalStorageReady());
     }, transformer: droppable());
-  }
-
-  Future<void> waitForInitialization() async {
-    while (LayeredContext.core == null) {
-      await Future.delayed(const Duration(milliseconds: 500));
-    }
-    while (state is! LocalStorageReady) {
-      await Future.delayed(const Duration(milliseconds: 500));
-    }
+    add(LocalStorageInit());
   }
 }

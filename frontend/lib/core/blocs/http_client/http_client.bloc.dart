@@ -1,0 +1,39 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart' show concurrent;
+import 'package:dio/dio.dart' show Dio, BaseOptions;
+import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, BlocProvider;
+import 'package:frontend/core/blocs/http_client/http_client.event.dart'
+    show HttpEvent, HttpSetup, HttpResponseEvent, HttpErrorEvent, HttpReady;
+import 'package:frontend/core/blocs/http_client/http_client.state.dart'
+    show HttpError, HttpInitial, HttpLoaded, HttpSettingUp, HttpState, HttpSuccess;
+import 'package:frontend/core/layered_context.dart';
+
+class HttpBloc extends Bloc<HttpEvent, HttpState> {
+  late final Dio _client;
+
+  HttpBloc() : super(HttpInitial()) {
+    on<HttpSetup>((event, emit) => emit(HttpSettingUp()));
+    on<HttpResponseEvent>((event, emit) {
+      emit(HttpSuccess(event.response));
+    }, transformer: concurrent());
+    on<HttpErrorEvent>((event, emit) {
+      emit(HttpError(event.message));
+    });
+    on<HttpReady>((event, emit) => emit(HttpLoaded()));
+    _setup();
+  }
+
+  static BlocProvider<HttpBloc> get provide =>
+      BlocProvider(lazy: false, create: (_) => HttpBloc());
+
+  static HttpBloc? get i => LayeredContext.core == null
+      ? null
+      : BlocProvider.of<HttpBloc>(LayeredContext.core!);
+
+  Dio get client => _client;
+
+  Future<void> _setup() async {
+    add(HttpSetup());
+    _client = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8001/api/'));
+    add(HttpReady());
+  }
+}

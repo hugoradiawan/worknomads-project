@@ -1,17 +1,26 @@
 import 'package:equatable/equatable.dart' show Equatable;
-import 'package:frontend/shared/data/model.dart' show UserModel;
+import 'package:frontend/shared/data/user.model.dart' show UserModel;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 class UserInitial extends UserState {
   const UserInitial() : super(user: null);
 }
 
-class UserState extends Equatable {
+abstract class UserState extends Equatable {
   final UserModel? user;
+  final Token? token;
 
-  const UserState({this.user});
+  const UserState({this.user, this.token});
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [user, token];
+}
 
-  UserState copyWith({UserModel? user}) => UserState(user: user ?? this.user);
+class LoginFetched extends UserState {
+  const LoginFetched(UserModel? user, Token? token)
+    : super(user: user, token: token);
+}
+
+class LoginFailed extends UserState {
+  const LoginFailed() : super(user: null, token: null);
 }

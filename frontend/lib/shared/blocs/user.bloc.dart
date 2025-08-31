@@ -1,19 +1,42 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, BlocProvider;
+import 'package:frontend/core/layered_context.dart' show LayeredContext;
+import 'package:frontend/core/usecase.dart' show Failure, BaseResponse;
+import 'package:frontend/features/login/domain/responses/login.response.dart'
+    show LoginResponse;
+import 'package:frontend/features/login/domain/usecases/login.usecase.dart';
 import 'package:frontend/shared/blocs/user.event.dart'
-    show UserEvent, OnLocalFetchUserData, OnRemoteFetchUserData;
+    show UserEvent, LoginFetch;
 import 'package:frontend/shared/blocs/user.state.dart'
-    show UserState, UserInitial;
+    show UserState, UserInitial, LoginFetched, LoginFailed;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  static BlocProvider<UserBloc> get provide =>
-      BlocProvider(create: (_) => UserBloc());
+  Stream<({Failure? fail, BaseResponse<LoginResponse> ok})>? _loginStream;
 
-  UserBloc() : super(const UserInitial()) {
-    on<OnLocalFetchUserData>(
-      (event, emit) => emit(state.copyWith(user: event.user)),
-    );
-    on<OnRemoteFetchUserData>(
-      (event, emit) => emit(state.copyWith(user: event.user)),
-    );
+  static UserBloc get i {
+    return BlocProvider.of<UserBloc>(LayeredContext.infrastructure!);
+  }
+
+  static BlocProvider<UserBloc> get provide =>
+      BlocProvider(lazy: false, create: (_) => UserBloc._internal());
+
+  UserBloc._internal() : super(const UserInitial()) {
+    on<LoginFetch>((event, emit) async {
+      await for (final result in LoginUseCase().call(event.params)) {
+        if (result.fail == null &&
+            result.ok.success &&
+            result.ok.data != null) {
+          emit(LoginFetched(result.ok.data?.user, result.ok.data?.token));
+        } else {
+          emit(const LoginFailed());
+        }
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _loginStream?.drain();
+    _loginStream = null;
+    return super.close();
   }
 }
