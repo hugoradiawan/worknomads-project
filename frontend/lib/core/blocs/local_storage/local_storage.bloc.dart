@@ -6,19 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, BlocProvider;
 import 'package:frontend/core/blocs/local_storage/events/local_storage.event.dart'
     show LocalStorageEvent, LocalStorageInit;
 import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
-    show
-        LocalLoginResponseFetch,
-        LocalLoginResponseSave,
-        LocalRegisterResponseFetch,
-        LocalRegisterResponseSave;
+    show LocalLoginResponseFetch, LocalLoginResponseSave, LocalRegisterResponseFetch, LocalRegisterResponseSave, LocalRefreshResponseFetch, LocalRefreshResponseFetched;
 import 'package:frontend/core/blocs/local_storage/states/local_login_response.state.dart'
-    show
-        LocalLoginResponseFetched,
-        LocalLoginResponseLoading,
-        LocalLoginResponseSaved,
-        LocalRegisterResponseLoading,
-        LocalRegisterResponseFetched,
-        LocalRegisterResponseSaved;
+    show LocalLoginResponseFetched, LocalLoginResponseLoading, LocalLoginResponseSaved, LocalRegisterResponseLoading, LocalRegisterResponseFetched, LocalRegisterResponseSaved, LocalRefreshResponseLoading, LocalRefreshResponseFetched;
 import 'package:frontend/core/blocs/local_storage/states/local_storage.state.dart'
     show
         LocalStorageState,
@@ -28,6 +18,7 @@ import 'package:frontend/core/blocs/local_storage/states/local_storage.state.dar
 import 'package:frontend/core/layered_context.dart' show LayeredContext;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
+import 'package:frontend/features/login/domain/responses/refresh.response.dart' show RefreshResponse;
 import 'package:frontend/features/login/domain/responses/register.response.dart'
     show RegisterResponse;
 import 'package:shared_preferences/shared_preferences.dart'
@@ -80,6 +71,15 @@ class LocalStorageBloc extends Bloc<LocalStorageEvent, LocalStorageState> {
         json.decode(local),
       );
       emit(LocalRegisterResponseFetched(response));
+    }, transformer: concurrent());
+    on<LocalRefreshResponseFetch>((event, emit) async {
+      emit(LocalRefreshResponseLoading());
+      final String? local = prefs.getString('refreshResponse');
+      if (local == null) return emit(LocalRefreshResponseFetched(null));
+      final RefreshResponse? response = RefreshResponse.fromJson(
+        json.decode(local),
+      );
+      emit(LocalRefreshResponseFetched(response));
     }, transformer: concurrent());
     on<LocalStorageInit>((event, emit) async {
       emit(LocalStorageSettingUp());

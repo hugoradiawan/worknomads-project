@@ -1,14 +1,19 @@
 import 'dart:async' show Completer;
 
 import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
-    show LocalLoginResponseFetch, LocalRegisterResponseFetch;
+    show
+        LocalLoginResponseFetch,
+        LocalRegisterResponseFetch,
+        LocalRefreshResponseFetch;
 import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart';
 import 'package:frontend/core/blocs/local_storage/states/local_login_response.state.dart'
     show
         LocalLoginResponseFetched,
         LocalLoginResponseNotFound,
         LocalRegisterResponseFetched,
-        LocalRegisterResponseNotFound;
+        LocalRegisterResponseNotFound,
+        LocalRefreshResponseNotFound,
+        LocalRefreshResponseFetched;
 import 'package:frontend/core/blocs/local_storage/states/local_storage.state.dart'
     show LocalStorageState;
 import 'package:frontend/core/usecase.dart';
@@ -146,7 +151,56 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   Future<BaseResponse<RefreshResponse>> refreshToken(
     RefreshTokenParams params,
   ) {
-    // TODO: implement refreshToken
-    throw UnimplementedError();
+    final Completer<BaseResponse<RefreshResponse>> completer =
+        Completer<BaseResponse<RefreshResponse>>();
+    final Stream<LocalStorageState>? subscription = LocalStorageBloc.i?.stream;
+    if (subscription == null) {
+      completer.complete(
+        BaseResponse<RefreshResponse>(
+          data: null,
+          message: 'Register failed (LocalStorageState not found)',
+          statusCode: 404,
+          success: false,
+        ),
+      );
+      return completer.future;
+    }
+    try {
+      subscription.listen((state) {
+        if (state is LocalRefreshResponseFetched) {
+          completer.complete(
+            BaseResponse<RefreshResponse>(
+              data: state.response,
+              message: 'local fetch successful',
+              statusCode: 200,
+              success: true,
+            ),
+          );
+          subscription.drain();
+        } else if (state is LocalRefreshResponseNotFound) {
+          completer.complete(
+            BaseResponse<RefreshResponse>(
+              data: null,
+              message: 'local fetch failed (User not found)',
+              statusCode: 404,
+              success: false,
+            ),
+          );
+          subscription.drain();
+        }
+      });
+    } catch (e) {
+      completer.complete(
+        BaseResponse<RefreshResponse>(
+          data: null,
+          message: e.toString(),
+          statusCode: 500,
+          success: false,
+        ),
+      );
+      subscription.drain();
+    }
+    LocalStorageBloc.i?.add(LocalRefreshResponseFetch());
+    return completer.future;
   }
 }

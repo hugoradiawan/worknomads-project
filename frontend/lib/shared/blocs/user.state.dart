@@ -32,3 +32,11 @@ class RegisterFetched extends UserState {
 class RegisterFailed extends UserState {
   const RegisterFailed() : super(user: null, token: null);
 }
+
+class RefreshFetched extends UserState {
+  const RefreshFetched(Token? token) : super(user: null, token: token);
+}
+
+class RefreshFailed extends UserState {
+  const RefreshFailed() : super(user: null, token: null);
+}

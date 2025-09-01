@@ -13,6 +13,8 @@ class LocalLoginResponseSave extends LocalStorageEvent {
 
 class LocalRegisterResponseFetch extends LocalStorageEvent {}
 
+class LocalRefreshResponseFetch extends LocalStorageEvent {}
+
 class LocalRegisterResponseSave extends LocalStorageEvent {
   final RegisterResponse response;
 
