@@ -4,7 +4,11 @@ import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
     show LocalLoginResponseFetch, LocalRegisterResponseFetch;
 import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart';
 import 'package:frontend/core/blocs/local_storage/states/local_login_response.state.dart'
-    show LocalLoginResponseFetched, LocalLoginResponseNotFound, LocalRegisterResponseFetched, LocalRegisterResponseNotFound;
+    show
+        LocalLoginResponseFetched,
+        LocalLoginResponseNotFound,
+        LocalRegisterResponseFetched,
+        LocalRegisterResponseNotFound;
 import 'package:frontend/core/blocs/local_storage/states/local_storage.state.dart'
     show LocalStorageState;
 import 'package:frontend/core/usecase.dart';
@@ -139,7 +143,9 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<BaseResponse<RefreshResponse>> refreshToken(RefreshTokenParams params) {
+  Future<BaseResponse<RefreshResponse>> refreshToken(
+    RefreshTokenParams params,
+  ) {
     // TODO: implement refreshToken
     throw UnimplementedError();
   }
