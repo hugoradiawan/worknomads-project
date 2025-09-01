@@ -11,8 +11,10 @@ import 'package:frontend/core/usecase.dart';
 import 'package:frontend/features/login/data/datasources/user_local.datasource.dart'
     show UserLocalDataSource;
 import 'package:frontend/features/login/domain/params/login.params.dart';
+import 'package:frontend/features/login/domain/params/refresh_token.params.dart';
 import 'package:frontend/features/login/domain/params/register.params.dart';
 import 'package:frontend/features/login/domain/responses/login.response.dart';
+import 'package:frontend/features/login/domain/responses/refresh.response.dart';
 import 'package:frontend/features/login/domain/responses/register.response.dart'
     show RegisterResponse;
 
@@ -134,5 +136,11 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     }
     LocalStorageBloc.i?.add(LocalRegisterResponseFetch());
     return completer.future;
+  }
+
+  @override
+  Future<BaseResponse<RefreshResponse>> refreshToken(RefreshTokenParams params) {
+    // TODO: implement refreshToken
+    throw UnimplementedError();
   }
 }
