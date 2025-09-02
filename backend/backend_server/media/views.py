@@ -6,7 +6,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
+
+from backend_server.shared.server_enum import (  # pyright: ignore[reportMissingImports]
+    ServerID,
+)
 from .models import Media
+from backend_server.shared.responses import (  # pyright: ignore[reportMissingImports]
+    BaseResponse,
+)
 from .serializers import MediaSerializer
 from .permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
@@ -16,20 +23,29 @@ class MediaUploadView(APIView):
     parser_classes = (MultiPartParser, FormParser)
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *_, **__):
         file_serializer = MediaSerializer(data=request.data)
         if file_serializer.is_valid():
             file_serializer.save(user_id=request.user_id)
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+            return BaseResponse.success(
+                data=file_serializer.data,
+                message="File uploaded successfully.",
+                status_code=status.HTTP_201_CREATED,
+                server_id=ServerID.BACKEND_SERVER,
+            )
         else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return BaseResponse.validation_error(
+                errors=file_serializer.errors,
+                code_id=5001,
+                server_id=ServerID.BACKEND_SERVER,
+            )
 
 
 class MediaListView(APIView):
     permission_classes = [IsAuthenticated]
     pagination_class = PageNumberPagination
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *_, **__):
         media = Media.objects.filter(user_id=request.user_id)
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(media, request, view=self)
@@ -38,18 +54,23 @@ class MediaListView(APIView):
             return paginator.get_paginated_response(serializer.data)
 
         serializer = MediaSerializer(media, many=True)
-        return Response(serializer.data)
+        return BaseResponse.success(
+            data=serializer.data,
+            message="Media list retrieved successfully.",
+            server_id=ServerID.BACKEND_SERVER,
+        )
 
 
 class MediaFileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, media_id, *args, **kwargs):
+    def get(self, request, media_id, *_, **__):
         media = get_object_or_404(Media, id=media_id)
         if media.user_id != request.user_id:
-            return Response(
-                {"detail": "You do not have permission to access this file."},
-                status=status.HTTP_403_FORBIDDEN,
+            return BaseResponse.forbidden(
+                code_id=6002,
+                message="You do not have permission to access this file.",
+                server_id=ServerID.BACKEND_SERVER,
             )
 
         try:
@@ -64,6 +85,8 @@ class MediaFileView(APIView):
                 )
                 return response
         except IOError:
-            return Response(
-                {"detail": "File not found."}, status=status.HTTP_404_NOT_FOUND
+            return BaseResponse.not_found(
+                code_id=6003,
+                message="File not found.",
+                server_id=ServerID.BACKEND_SERVER,
             )
