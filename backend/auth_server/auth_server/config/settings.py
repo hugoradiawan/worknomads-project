@@ -11,20 +11,30 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR.parent, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ggs8kk7vy-wr(!b@$a@y(r1)p++1q4#=0=cz&hq1cw1iy0ma^7"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -75,12 +85,11 @@ WSGI_APPLICATION = "auth_server.config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR.parent.parent / "db.sqlite3",
-    }
+        **env.db(),
+        "NAME": BASE_DIR.parent.parent / "db.sqlite3"
+    },
 }
 
 
@@ -145,9 +154,12 @@ REST_FRAMEWORK = {
 # JWT Configuration
 from datetime import timedelta
 
+access_token_lifetime_min: int = env.int("ACCESS_TOKEN_LIFETIME_IN_MIN", 60)  # type: ignore
+refresh_token_lifetime_day: int = env.int("REFRESH_TOKEN_LIFETIME_IN_DAY", 7)  # type: ignore
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=access_token_lifetime_min),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=refresh_token_lifetime_day),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
