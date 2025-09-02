@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Django Server",
+			"type": "shell",
+			"command": "${workspaceFolder}\\env\\Scripts\\python.exe",
+			"args": [
+				"${workspaceFolder}\\auth_server\\manage.py",
+				"runserver",
+				"0.0.0.0:8001"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
