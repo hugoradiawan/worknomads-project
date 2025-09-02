@@ -79,7 +79,7 @@ WSGI_APPLICATION = "auth_server.config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR.parent.parent / "db.sqlite3",
     }
 }
 
