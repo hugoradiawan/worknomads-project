@@ -1,0 +1,95 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Auth Server (dev)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/auth_server/manage.py",
+            "args": [
+                "runserver",
+                "8000"
+            ],
+            "django": true,
+            "env": {
+                "ENV_FLAVOR": "dev"
+            },
+            "cwd": "${workspaceFolder}/auth_server"
+        },
+        {
+            "name": "Run Auth Server (stage)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/auth_server/manage.py",
+            "args": [
+                "runserver",
+                "8001"
+            ],
+            "django": true,
+            "env": {
+                "ENV_FLAVOR": "stage"
+            },
+            "cwd": "${workspaceFolder}/auth_server"
+        },
+        {
+            "name": "Run Auth Server (prod)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/auth_server/manage.py",
+            "args": [
+                "runserver",
+                "8002"
+            ],
+            "django": true,
+            "env": {
+                "ENV_FLAVOR": "prod"
+            },
+            "cwd": "${workspaceFolder}/auth_server"
+        },
+        {
+            "name": "Run Backend Server (dev)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend_server/manage.py",
+            "args": [
+                "runserver",
+                "8003"
+            ],
+            "django": true,
+            "env": {
+                "ENV_FLAVOR": "dev"
+            },
+            "cwd": "${workspaceFolder}/backend_server"
+        },
+        {
+            "name": "Run Backend Server (stage)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend_server/manage.py",
+            "args": [
+                "runserver",
+                "8004"
+            ],
+            "django": true,
+            "env": {
+                "ENV_FLAVOR": "stage"
+            },
+            "cwd": "${workspaceFolder}/backend_server"
+        },
+        {
+            "name": "Run Backend Server (prod)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend_server/manage.py",
+            "args": [
+                "runserver",
+                "8005"
+            ],
+            "django": true,
+            "env": {
+                "ENV_FLAVOR": "prod"
+            },
+            "cwd": "${workspaceFolder}/backend_server"
+        }
+    ]
+}

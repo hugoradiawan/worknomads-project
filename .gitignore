@@ -39,7 +39,7 @@ media/migrations/
 staticfiles/
 
 # IDE
-.vscode/
+# .vscode/
 .idea/
 *.swp
 *.swo
@@ -144,3 +144,6 @@ backend/auth_server/.env.stage
 backend/db.dev.sqlite3
 backend/db.stage.sqlite3
 backend/db.prod.sqlite3
+backend/backend_server/.env.dev
+backend/backend_server/.env.prod
+backend/backend_server/.env.stage
