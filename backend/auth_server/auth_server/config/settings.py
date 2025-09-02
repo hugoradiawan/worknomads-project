@@ -23,7 +23,13 @@ env = environ.Env(
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR.parent, ".env"))
+flavor = os.environ.get('ENV_FLAVOR', 'dev')
+env_file = os.path.join(BASE_DIR.parent, f'.env.{flavor}')
+if os.path.exists(env_file):
+    environ.Env.read_env(env_file)
+else:
+    # Fallback to default .env if flavor-specific one doesn't exist
+    environ.Env.read_env(os.path.join(BASE_DIR.parent, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -35,7 +41,6 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
-
 
 # Application definition
 
@@ -88,7 +93,7 @@ WSGI_APPLICATION = "auth_server.config.wsgi.application"
 DATABASES = {
     "default": {
         **env.db(),
-        "NAME": BASE_DIR.parent.parent / "db.sqlite3"
+        "NAME": BASE_DIR.parent.parent / f"db.{flavor}.sqlite3"
     },
 }
 

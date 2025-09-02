@@ -138,3 +138,9 @@ app.*.map.json
 !frontend/ios/
 !frontend/android/
 !frontend/pubspec.yaml
+backend/auth_server/.env.dev
+backend/auth_server/.env.prod
+backend/auth_server/.env.stage
+backend/db.dev.sqlite3
+backend/db.stage.sqlite3
+backend/db.prod.sqlite3
