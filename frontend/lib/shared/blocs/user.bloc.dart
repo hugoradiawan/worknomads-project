@@ -1,4 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, BlocProvider;
+import 'package:frontend/core/blocs/http_client/http_client.bloc.dart'
+    show HttpBloc;
+import 'package:frontend/core/blocs/http_client/http_client.event.dart'
+    show HttpSetToken;
 import 'package:frontend/core/layered_context.dart' show LayeredContext;
 import 'package:frontend/core/usecase.dart' show Failure, BaseResponse;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
@@ -9,7 +13,7 @@ import 'package:frontend/features/login/domain/usecases/refresh.usecase.dart'
 import 'package:frontend/features/login/domain/usecases/register.usecase.dart'
     show RegisterUseCase;
 import 'package:frontend/shared/blocs/user.event.dart'
-    show UserEvent, LoginFetch, RegisterFetch, RefreshFetch;
+    show UserEvent, LoginFetch, RegisterFetch, RefreshFetch, LogoutUser;
 import 'package:frontend/shared/blocs/user.state.dart'
     show
         UserState,
@@ -20,6 +24,7 @@ import 'package:frontend/shared/blocs/user.state.dart'
         RegisterFailed,
         RefreshFetched,
         RefreshFailed;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<({Failure? fail, BaseResponse<LoginResponse> ok})>? _loginStream;
@@ -34,12 +39,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc._internal() : super(const UserInitial()) {
     on<LoginFetch>((event, emit) async {
       await for (final result in LoginUseCase().call(event.params)) {
+        print(result);
         if (result.fail == null &&
             result.ok.success &&
             result.ok.data != null) {
-          emit(LoginFetched(result.ok.data?.user, result.ok.data?.token));
+          final Token? token = result.ok.data?.token;
+          if (token != null) {
+            HttpBloc.i?.add(HttpSetToken(token));
+          }
+          emit(LoginFetched(user: result.ok.data?.user, token: token));
         } else {
-          emit(const LoginFailed());
+          emit(LoginFailed(user: state.user, token: state.token));
         }
       }
     });
@@ -59,11 +69,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (result.fail == null &&
             result.ok.success &&
             result.ok.data != null) {
-          emit(RefreshFetched(result.ok.data?.token));
+          emit(RefreshFetched(token: result.ok.data?.token));
         } else {
           emit(const RefreshFailed());
         }
       }
+    });
+    on<LogoutUser>((event, emit) {
+      HttpBloc.i?.add(HttpSetToken(null));
+      emit(const UserInitial());
     });
   }
 

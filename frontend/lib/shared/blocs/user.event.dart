@@ -23,3 +23,5 @@ class RefreshFetch extends UserEvent {
 
   RefreshFetch(this.params);
 }
+
+class LogoutUser extends UserEvent {}

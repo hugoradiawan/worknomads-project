@@ -1,4 +1,5 @@
 import 'package:frontend/core/usecase.dart' show Params, BaseResponse;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 abstract class HttpEvent {}
 
@@ -29,3 +30,9 @@ class HttpErrorEvent extends HttpEvent {
 class HttpSetup extends HttpEvent {}
 
 class HttpReady extends HttpEvent {}
+
+class HttpSetToken extends HttpEvent {
+  final Token? token;
+
+  HttpSetToken(this.token);
+}

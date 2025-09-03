@@ -3,19 +3,27 @@ import 'package:flutter/material.dart'
         AppBar,
         Card,
         FloatingActionButton,
+        IconButton,
         Icons,
         ListTile,
         Scaffold,
         Slider,
         showModalBottomSheet;
 import 'package:flutter/widgets.dart';
+import 'package:frontend/shared/blocs/user.bloc.dart';
+import 'package:frontend/shared/blocs/user.event.dart' show LogoutUser;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Home Page')),
+    appBar: AppBar(
+      title: const Text('Home Page'),
+      actions: [IconButton(onPressed: () {
+        UserBloc.i.add(LogoutUser());
+      }, icon: const Icon(Icons.logout))],
+    ),
     body: ListView(
       children: [
         Card(

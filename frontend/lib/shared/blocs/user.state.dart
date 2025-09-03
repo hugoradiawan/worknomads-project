@@ -3,7 +3,7 @@ import 'package:frontend/shared/data/user.model.dart' show UserModel;
 import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 class UserInitial extends UserState {
-  const UserInitial() : super(user: null);
+  const UserInitial({super.token, super.user});
 }
 
 abstract class UserState extends Equatable {
@@ -17,26 +17,25 @@ abstract class UserState extends Equatable {
 }
 
 class LoginFetched extends UserState {
-  const LoginFetched(UserModel? user, Token? token)
-    : super(user: user, token: token);
+  const LoginFetched({super.user, super.token});
 }
 
 class LoginFailed extends UserState {
-  const LoginFailed() : super(user: null, token: null);
+  const LoginFailed({super.user, super.token});
 }
 
 class RegisterFetched extends UserState {
-  const RegisterFetched() : super(user: null, token: null);
+  const RegisterFetched({super.user, super.token});
 }
 
 class RegisterFailed extends UserState {
-  const RegisterFailed() : super(user: null, token: null);
+  const RegisterFailed({super.user, super.token});
 }
 
 class RefreshFetched extends UserState {
-  const RefreshFetched(Token? token) : super(user: null, token: token);
+  const RefreshFetched({super.user, super.token});
 }
 
 class RefreshFailed extends UserState {
-  const RefreshFailed() : super(user: null, token: null);
+  const RefreshFailed({super.user, super.token});
 }
