@@ -5,7 +5,7 @@ from auth_server.services.auth.login_view import LoginView
 from auth_server.services.auth.token_refresh_view import CustomTokenRefreshView
 
 urlpatterns = [
-    path("api/register", view=RegisterView.as_view(), name="register"),
-    path("api/login", LoginView.as_view(), name="token_obtain_pair"),
-    path("api/refreshtoken", CustomTokenRefreshView.as_view(), name="token_refresh"),
+    path("register", view=RegisterView.as_view(), name="register"),
+    path("login", LoginView.as_view(), name="token_obtain_pair"),
+    path("refreshtoken", CustomTokenRefreshView.as_view(), name="token_refresh"),
 ]
