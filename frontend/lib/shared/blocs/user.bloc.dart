@@ -1,9 +1,10 @@
-import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart'
     show HttpBloc;
 import 'package:frontend/core/blocs/http_client/http_client.event.dart'
     show HttpSetToken;
 import 'package:frontend/core/layered_context.dart' show LayeredContext;
+import 'package:frontend/core/typedef.dart' show Json;
 import 'package:frontend/core/usecase.dart' show Failure, BaseResponse;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
@@ -24,9 +25,11 @@ import 'package:frontend/shared/blocs/user.state.dart'
         RegisterFailed,
         RefreshFetched,
         RefreshFailed;
+import 'package:frontend/shared/data/user.model.dart' show UserModel;
 import 'package:frontend/shared/domain/entities/token.dart' show Token;
+import 'package:hydrated_bloc/hydrated_bloc.dart' show HydratedBloc;
 
-class UserBloc extends Bloc<UserEvent, UserState> {
+class UserBloc extends HydratedBloc<UserEvent, UserState> {
   Stream<({Failure? fail, BaseResponse<LoginResponse> ok})>? _loginStream;
 
   static UserBloc get i {
@@ -39,7 +42,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc._internal() : super(const UserInitial()) {
     on<LoginFetch>((event, emit) async {
       await for (final result in LoginUseCase().call(event.params)) {
-        print(result);
+        print(result.ok.data?.toJson());
         if (result.fail == null &&
             result.ok.success &&
             result.ok.data != null) {
@@ -87,4 +90,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     _loginStream = null;
     return super.close();
   }
+
+  @override
+  UserInitial? fromJson(Json json) {
+    if (json.isEmpty) return null;
+    return UserInitial(
+      user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
+      token: json['token'] != null ? Token.fromJson(json['token']) : null,
+    );
+  }
+
+  @override
+  Json? toJson(UserState state) => {
+    'user': state.user?.toJson(),
+    'token': state.token?.toJson(),
+  };
 }

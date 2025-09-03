@@ -1,13 +1,28 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart' show concurrent;
 import 'package:dio/dio.dart' show Dio, BaseOptions;
-import 'package:flutter_bloc/flutter_bloc.dart' show Bloc, BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
 import 'package:frontend/core/blocs/http_client/http_client.event.dart'
-    show HttpEvent, HttpSetup, HttpResponseEvent, HttpErrorEvent, HttpReady, HttpSetToken;
+    show
+        HttpEvent,
+        HttpSetup,
+        HttpResponseEvent,
+        HttpErrorEvent,
+        HttpReady,
+        HttpSetToken;
 import 'package:frontend/core/blocs/http_client/http_client.state.dart'
-    show HttpError, HttpInitial, HttpLoaded, HttpSettingUp, HttpState, HttpSuccess;
+    show
+        HttpError,
+        HttpInitial,
+        HttpLoaded,
+        HttpSettingUp,
+        HttpState,
+        HttpSuccess;
 import 'package:frontend/core/layered_context.dart';
+import 'package:frontend/core/typedef.dart' show Json;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
+import 'package:hydrated_bloc/hydrated_bloc.dart' show HydratedBloc;
 
-class HttpBloc extends Bloc<HttpEvent, HttpState> {
+class HttpBloc extends HydratedBloc<HttpEvent, HttpState> {
   late final Dio _client;
 
   HttpBloc() : super(HttpInitial()) {
@@ -39,4 +54,11 @@ class HttpBloc extends Bloc<HttpEvent, HttpState> {
     _client = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000/api/'));
     add(HttpReady());
   }
+
+  @override
+  HttpInitial? fromJson(Json json) =>
+      HttpInitial(token: Token.fromJson(json['token']));
+
+  @override
+  Json? toJson(HttpState state) => {'token': state.token?.toJson()};
 }
