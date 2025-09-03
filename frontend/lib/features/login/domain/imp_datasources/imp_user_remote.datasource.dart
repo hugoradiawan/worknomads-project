@@ -29,7 +29,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<BaseResponse<LoginResponse>> login(LoginParams params) async {
     try {
       final Response<dynamic>? response = await HttpBloc.i?.client.post(
-        '/login',
+        '/auth/login',
         data: params.toJson(),
       );
       if (response?.statusCode == 200) {
@@ -62,7 +62,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<BaseResponse<RegisterResponse>> register(RegisterParams params) async {
     try {
       final Response<dynamic>? response = await HttpBloc.i?.client.post(
-        '/register',
+        '/auth/register',
         data: params.toJson(),
       );
       if (response?.statusCode == 200) {

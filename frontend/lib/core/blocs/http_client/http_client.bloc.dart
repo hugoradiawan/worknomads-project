@@ -51,7 +51,7 @@ class HttpBloc extends HydratedBloc<HttpEvent, HttpState> {
 
   Future<void> _setup() async {
     add(HttpSetup());
-    _client = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8000/api/'));
+    _client = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8080/api/'));
     add(HttpReady());
   }
 

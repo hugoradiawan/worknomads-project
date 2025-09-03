@@ -45,7 +45,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Stream<BaseResponse<LoginResponse>> login(LoginParams params) async* {
-    yield await userLocalDataSource.login(params);
+    // yield await userLocalDataSource.login(params);
     yield await userRemoteDataSource.login(params);
   }
 
@@ -53,13 +53,13 @@ class UserRepositoryImpl implements UserRepository {
   Stream<BaseResponse<RegisterResponse>> register(
     RegisterParams params,
   ) async* {
-    yield await userLocalDataSource.register(params);
+    // yield await userLocalDataSource.register(params);
     yield await userRemoteDataSource.register(params);
   }
 
   @override
   Stream<BaseResponse<RefreshResponse>> refreshToken(RefreshTokenParams params) async* {
-    yield await userLocalDataSource.refreshToken(params);
+    // yield await userLocalDataSource.refreshToken(params);
     yield await userRemoteDataSource.refreshToken(params);
   }
 }
