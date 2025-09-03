@@ -42,7 +42,6 @@ class UserBloc extends HydratedBloc<UserEvent, UserState> {
   UserBloc._internal() : super(const UserInitial()) {
     on<LoginFetch>((event, emit) async {
       await for (final result in LoginUseCase().call(event.params)) {
-        print(result.ok.data?.toJson());
         if (result.fail == null &&
             result.ok.success &&
             result.ok.data != null) {
