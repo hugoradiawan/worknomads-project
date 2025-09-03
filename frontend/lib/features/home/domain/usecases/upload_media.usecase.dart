@@ -1,15 +1,14 @@
 import 'package:frontend/core/usecase.dart'
     show Failure, UseCase, BaseResponse, ServerFailure;
+import 'package:frontend/features/home/data/models/media.model.dart'
+    show MediaModel;
 import 'package:frontend/features/home/data/repositories/media.repository.dart'
     show MediaRepository;
 import 'package:frontend/features/home/domain/imp_repositories/impl_media.repository.dart'
     show MediaRepositoryImpl;
 import 'package:frontend/features/home/domain/params/upload_media.params.dart';
-import 'package:frontend/features/home/domain/responses/media_upload.response.dart'
-    show UploadMediaResponse;
 
-class UploadMediaUseCase
-    extends UseCase<UploadMediaResponse, UploadMediaParams> {
+class UploadMediaUseCase extends UseCase<MediaModel, UploadMediaParams> {
   final MediaRepository mediaRepository;
 
   static UploadMediaUseCase? _instance;
@@ -25,11 +24,12 @@ class UploadMediaUseCase
   }
 
   @override
-  Stream<({Failure? fail, BaseResponse<UploadMediaResponse> ok})> call(
+  Stream<({Failure? fail, BaseResponse<MediaModel> ok})> call(
     UploadMediaParams params,
   ) async* {
-    final BaseResponse<UploadMediaResponse> response = await mediaRepository
-        .upload(params);
+    final BaseResponse<MediaModel> response = await mediaRepository.upload(
+      params,
+    );
     if (response.success) {
       yield (fail: null, ok: response);
     } else {

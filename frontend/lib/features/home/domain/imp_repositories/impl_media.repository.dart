@@ -3,6 +3,8 @@ import 'package:frontend/features/home/data/datasources/media_local.datasource.d
     show MediaLocalDataSource;
 import 'package:frontend/features/home/data/datasources/media_remote.datasource.dart'
     show MediaRemoteDataSource;
+import 'package:frontend/features/home/data/models/media.model.dart'
+    show MediaModel;
 import 'package:frontend/features/home/data/repositories/media.repository.dart'
     show MediaRepository;
 import 'package:frontend/features/home/domain/imp_datasources/impl_media_local.datasource.dart'
@@ -14,7 +16,6 @@ import 'package:frontend/features/home/domain/params/fetch_media.params.dart'
 import 'package:frontend/features/home/domain/params/upload_media.params.dart';
 import 'package:frontend/features/home/domain/responses/media.response.dart'
     show MediaResponse;
-import 'package:frontend/features/home/domain/responses/media_upload.response.dart' show UploadMediaResponse;
 
 class MediaRepositoryImpl implements MediaRepository {
   final MediaRemoteDataSource mediaRemoteDataSource;
@@ -47,7 +48,6 @@ class MediaRepositoryImpl implements MediaRepository {
   }
 
   @override
-  Future<BaseResponse<UploadMediaResponse>> upload(UploadMediaParams params) {
-    return mediaRemoteDataSource.upload(params);
-  }
+  Future<BaseResponse<MediaModel>> upload(UploadMediaParams params) =>
+      mediaRemoteDataSource.upload(params);
 }

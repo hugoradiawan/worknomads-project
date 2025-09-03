@@ -19,5 +19,5 @@ class UploadMediaParams extends Params {
   @override
   List<Object?> get props => [file, type, metadata];
 
-  Json toJson() => {'file': file.path, 'type': type.name, 'metadata': metadata};
+  Json toJson() => {'file': file.path, 'media_type': type.name, 'metadata': metadata};
 }

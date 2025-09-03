@@ -1,6 +1,7 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart' show concurrent;
-import 'package:dio/dio.dart' show Dio, BaseOptions;
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
+import 'package:frontend/core/blocs/http_client/auth_interceptor.dart';
 import 'package:frontend/core/blocs/http_client/http_client.event.dart'
     show
         HttpEvent,
@@ -52,6 +53,10 @@ class HttpBloc extends HydratedBloc<HttpEvent, HttpState> {
   Future<void> _setup() async {
     add(HttpSetup());
     _client = Dio(BaseOptions(baseUrl: 'http://10.0.2.2:8080/api/'));
+
+    // Add authentication interceptor
+    _client.interceptors.add(AuthInterceptor(this));
+
     add(HttpReady());
   }
 

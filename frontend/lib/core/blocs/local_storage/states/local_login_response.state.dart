@@ -1,18 +1,11 @@
 import 'package:frontend/core/blocs/local_storage/states/local_storage.state.dart'
     show LocalStorageState;
-import 'package:frontend/features/login/domain/responses/login.response.dart';
 import 'package:frontend/features/login/domain/responses/refresh.response.dart' show RefreshResponse;
 import 'package:frontend/features/login/domain/responses/register.response.dart' show RegisterResponse;
 
 class LocalLoginResponseSaved extends LocalStorageState {}
 
 class LocalRegisterResponseSaved extends LocalStorageState {}
-
-class LocalLoginResponseFetched extends LocalStorageState {
-  final LoginResponse? response;
-
-  LocalLoginResponseFetched(this.response);
-}
 
 class LocalRegisterResponseFetched extends LocalStorageState {
   final RegisterResponse? response;

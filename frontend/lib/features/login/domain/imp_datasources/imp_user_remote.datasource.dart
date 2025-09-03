@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart';
 import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
-    show LocalLoginResponseSave, LocalRegisterResponseSave, LocalRefreshResponseSave;
+    show LocalRegisterResponseSave, LocalRefreshResponseSave;
 import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart';
 import 'package:frontend/core/usecase.dart' show BaseResponse;
 import 'package:frontend/features/login/data/datasources/user_remote.datasource.dart'
@@ -9,11 +9,14 @@ import 'package:frontend/features/login/data/datasources/user_remote.datasource.
 import 'package:frontend/features/login/domain/params/login.params.dart'
     show LoginParams;
 import 'package:frontend/features/login/domain/params/refresh_token.params.dart';
-import 'package:frontend/features/login/domain/params/register.params.dart' show RegisterParams;
+import 'package:frontend/features/login/domain/params/register.params.dart'
+    show RegisterParams;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
-import 'package:frontend/features/login/domain/responses/refresh.response.dart' show RefreshResponse;
-import 'package:frontend/features/login/domain/responses/register.response.dart' show RegisterResponse;
+import 'package:frontend/features/login/domain/responses/refresh.response.dart'
+    show RefreshResponse;
+import 'package:frontend/features/login/domain/responses/register.response.dart'
+    show RegisterResponse;
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   static UserRemoteDataSourceImpl? _instance;
@@ -33,11 +36,13 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         data: params.toJson(),
       );
       if (response?.statusCode == 200) {
-        final LoginResponse? loginResponse = LoginResponse.fromJson(
-          response!.data,
+        return BaseResponse<LoginResponse>(
+          data: LoginResponse.fromJson(response!.data?['data']),
+          message: response.data['message'],
+          serverId: response.data['server_id'],
+          statusCode: response.statusCode,
+          success: response.data['success'],
         );
-        LocalStorageBloc.i?.add(LocalLoginResponseSave(loginResponse!));
-        return loginResponse!;
       } else {
         return BaseResponse<LoginResponse>(
           data: null,
@@ -92,8 +97,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<BaseResponse<RefreshResponse>> refreshToken(RefreshTokenParams params) async {
-        try {
+  Future<BaseResponse<RefreshResponse>> refreshToken(
+    RefreshTokenParams params,
+  ) async {
+    try {
       final Response<dynamic>? response = await HttpBloc.i?.client.post(
         '/refreshtoken',
         data: params.toJson(),
@@ -123,5 +130,4 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       );
     }
   }
-
 }

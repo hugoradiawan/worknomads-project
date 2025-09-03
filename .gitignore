@@ -147,3 +147,4 @@ backend/db.prod.sqlite3
 backend/backend_server/.env.dev
 backend/backend_server/.env.prod
 backend/backend_server/.env.stage
+backend/backend_server/uploaded/

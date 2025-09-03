@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' show showModalBottomSheet, BuildContext;
 import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
-import 'package:frontend/features/home/data/models/media.model.dart' show MediaModel;
+import 'package:frontend/features/home/data/models/media.model.dart'
+    show MediaModel;
 import 'package:frontend/features/home/presentation/blocs/homepage.state.dart'
     show HomePageState, HomePageInitial;
 import 'package:frontend/features/home/presentation/components/media_bottomsheet.component.dart'
@@ -19,6 +20,5 @@ class HomePageCubit extends Cubit<HomePageState> {
       builder: (_) => const MediaBottomSheet(),
     );
     if (result == null) return;
-    print(result);
   }
 }
