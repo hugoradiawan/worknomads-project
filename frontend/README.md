@@ -66,7 +66,7 @@ This project implements **Clean Architecture** principles, providing:
 - **Flutter SDK**: 3.35.2
 - **Dart SDK**: Latest stable
 - **IDE**: VS Code, Android Studio, or IntelliJ IDEA
-- **Platform Tools**: 
+- **Platform Tools**:
   - Android SDK (for Android development)
   - Xcode (for iOS development on macOS)
 
@@ -92,10 +92,10 @@ This project implements **Clean Architecture** principles, providing:
    ```bash
    # Development mode
    flutter run
-   
+
    # Release mode
    flutter run --release
-   
+
    # Specific platform
    flutter run -d android
    flutter run -d ios
