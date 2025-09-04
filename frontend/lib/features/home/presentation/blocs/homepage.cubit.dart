@@ -26,6 +26,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       builder: (_) => const MediaBottomSheet(),
     );
     if (result == null) return;
+    loadMedia();
   }
 
   void loadMedia() async {
