@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart';
-import 'package:frontend/core/usecase.dart' show BaseResponse;
 import 'package:frontend/features/login/data/datasources/user_remote.datasource.dart'
     show UserRemoteDataSource;
 import 'package:frontend/features/login/domain/params/login.params.dart'

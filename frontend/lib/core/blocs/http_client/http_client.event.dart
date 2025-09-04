@@ -1,4 +1,5 @@
-import 'package:frontend/core/usecase.dart' show Params, BaseResponse;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
+import 'package:frontend/core/params.dart' show Params;
 import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 /// Abstract base class for all HTTP-related events in the HttpBloc.

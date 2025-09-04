@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart'
     show HttpBloc;
 import 'package:frontend/core/blocs/http_client/http_client.event.dart'
     show HttpSetToken;
+import 'package:frontend/core/failure.dart' show Failure;
 import 'package:frontend/core/layered_context.dart' show LayeredContext;
 import 'package:frontend/core/typedef.dart' show Json;
-import 'package:frontend/core/usecase.dart' show Failure, BaseResponse;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
 import 'package:frontend/features/login/domain/usecases/login.usecase.dart';

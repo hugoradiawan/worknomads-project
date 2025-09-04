@@ -1,4 +1,4 @@
-import 'package:frontend/core/usecase.dart' show BaseResponse;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/features/login/data/datasources/user_local.datasource.dart'
     show UserLocalDataSource;
 import 'package:frontend/features/login/data/datasources/user_remote.datasource.dart'

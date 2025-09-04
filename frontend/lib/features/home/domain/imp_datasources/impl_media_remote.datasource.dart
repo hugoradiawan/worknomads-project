@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart' show Response, FormData, MultipartFile;
 import 'package:dio/dio.dart' show Response, MultipartFile, FormData;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart'
     show HttpBloc;
-import 'package:frontend/core/usecase.dart' show BaseResponse;
 import 'package:frontend/features/home/data/datasources/media_remote.datasource.dart'
     show MediaRemoteDataSource;
 import 'package:frontend/features/home/data/models/media.model.dart'

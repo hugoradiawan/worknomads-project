@@ -1,5 +1,6 @@
-import 'package:frontend/core/usecase.dart'
-    show Failure, UseCase, BaseResponse, ServerFailure;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
+import 'package:frontend/core/failure.dart' show Failure, ServerFailure;
+import 'package:frontend/core/usecase.dart' show UseCase;
 import 'package:frontend/features/home/data/models/media.model.dart'
     show MediaModel;
 import 'package:frontend/features/home/data/repositories/media.repository.dart'

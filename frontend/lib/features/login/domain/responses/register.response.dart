@@ -1,5 +1,5 @@
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/core/typedef.dart' show Json;
-import 'package:frontend/core/usecase.dart' show BaseResponse;
 
 class RegisterResponse extends BaseResponse<RegisterResponse> {
   RegisterResponse({required super.success});

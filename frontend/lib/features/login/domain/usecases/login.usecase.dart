@@ -1,5 +1,7 @@
+import 'package:frontend/core/base_response.dart' show BaseResponse;
+import 'package:frontend/core/failure.dart' show Failure, ServerFailure;
 import 'package:frontend/core/usecase.dart'
-    show Failure, UseCase, BaseResponse, ServerFailure;
+    show UseCase;
 import 'package:frontend/features/login/data/repositories/user.repository.dart'
     show UserRepository;
 import 'package:frontend/features/login/domain/imp_repositories/imp_user.repository.dart';

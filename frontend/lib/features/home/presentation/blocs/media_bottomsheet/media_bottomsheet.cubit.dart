@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart' show FilePicker, FileType;
 import 'package:flutter/material.dart' show BuildContext, debugPrint;
-import 'package:frontend/core/usecase.dart' show Failure, BaseResponse;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
+import 'package:frontend/core/failure.dart' show Failure;
 import 'package:frontend/features/home/data/models/media.model.dart'
     show MediaModel;
 import 'package:frontend/features/home/domain/params/upload_media.params.dart'

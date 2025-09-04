@@ -1,4 +1,4 @@
-import 'package:frontend/core/usecase.dart' show BaseResponse;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/features/login/domain/params/login.params.dart'
     show LoginParams;
 import 'package:frontend/features/login/domain/params/refresh_token.params.dart';

@@ -1,4 +1,4 @@
-import 'package:frontend/core/usecase.dart' show BaseResponse;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/features/home/data/models/media.model.dart'
     show MediaModel;
 import 'package:frontend/features/home/domain/params/fetch_media.params.dart';

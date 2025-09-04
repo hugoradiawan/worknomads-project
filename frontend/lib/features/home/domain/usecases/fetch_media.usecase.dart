@@ -1,9 +1,15 @@
+import 'package:frontend/core/base_response.dart' show BaseResponse;
+import 'package:frontend/core/failure.dart' show Failure, ServerFailure;
 import 'package:frontend/core/usecase.dart'
-    show Failure, UseCase, BaseResponse, ServerFailure;
-import 'package:frontend/features/home/data/models/media.model.dart' show MediaModel;
-import 'package:frontend/features/home/data/repositories/media.repository.dart' show MediaRepository;
-import 'package:frontend/features/home/domain/imp_repositories/impl_media.repository.dart' show MediaRepositoryImpl;
-import 'package:frontend/features/home/domain/params/fetch_media.params.dart' show FetchMediaParams;
+    show UseCase;
+import 'package:frontend/features/home/data/models/media.model.dart'
+    show MediaModel;
+import 'package:frontend/features/home/data/repositories/media.repository.dart'
+    show MediaRepository;
+import 'package:frontend/features/home/domain/imp_repositories/impl_media.repository.dart'
+    show MediaRepositoryImpl;
+import 'package:frontend/features/home/domain/params/fetch_media.params.dart'
+    show FetchMediaParams;
 
 class FetchMediaUseCase extends UseCase<List<MediaModel>, FetchMediaParams> {
   final MediaRepository userRepository;

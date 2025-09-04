@@ -1,4 +1,4 @@
-import 'package:frontend/core/usecase.dart' show BaseResponse;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/features/home/data/datasources/media_local.datasource.dart'
     show MediaLocalDataSource;
 import 'package:frontend/features/home/data/datasources/media_remote.datasource.dart'

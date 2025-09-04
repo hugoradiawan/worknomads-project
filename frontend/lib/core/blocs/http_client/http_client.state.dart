@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:frontend/core/usecase.dart' show BaseResponse;
+import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 /// Initial state of the HTTP client before setup or after token updates.
