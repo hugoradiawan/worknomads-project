@@ -1,6 +1,7 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart' show concurrent;
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
+import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 import 'package:frontend/core/blocs/http_client/auth_interceptor.dart';
 import 'package:frontend/core/blocs/http_client/http_client.event.dart'
     show
@@ -96,10 +97,17 @@ class HttpBloc extends HydratedBloc<HttpEvent, HttpState> {
     // Emit setup event to indicate configuration is starting
     add(HttpSetup());
 
+    final String? baseUrl = dotenv.env['BASE_URL'];
+    if (baseUrl == null) {
+      add(HttpErrorEvent('BASE_URL is not defined in .env file'));
+      return;
+    }
+    print('Using BASE_URL: $baseUrl');
+
     // Create Dio client with base configuration
     _client = Dio(
       BaseOptions(
-        baseUrl: 'http://10.0.2.2:8080/api/', // Android emulator localhost
+        baseUrl: baseUrl,
       ),
     );
 
