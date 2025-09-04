@@ -11,13 +11,16 @@ import 'package:flutter/material.dart'
         SliverFillRemaining;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/home/data/models/media.model.dart' show MediaModel;
-import 'package:frontend/features/home/domain/params/upload_media.params.dart' show MediaUploadType;
+import 'package:frontend/features/home/data/models/media.model.dart'
+    show MediaModel;
+import 'package:frontend/features/home/domain/params/upload_media.params.dart'
+    show MediaUploadType;
 import 'package:frontend/features/home/presentation/blocs/homepage.cubit.dart';
 import 'package:frontend/features/home/presentation/blocs/homepage.state.dart';
 import 'package:frontend/features/home/presentation/components/image_tile.component.dart'
     show ImageTile;
-import 'package:frontend/features/home/presentation/components/voice_tile.component.dart' show VoiceTile;
+import 'package:frontend/features/home/presentation/components/voice_tile.component.dart'
+    show VoiceTile;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

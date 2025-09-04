@@ -27,11 +27,7 @@ class MediaBottomSheetCubit extends Cubit<MediaBottomSheetState> {
   void pickAudio(BuildContext context) async {
     emit(const MediaBottomSheetLoading());
     final result = await FilePicker.platform.pickFiles(type: FileType.audio);
-    if (result?.isSinglePick ?? true) {
-      debugPrint('No audio file selected');
-      emit(const MediaBottomSheetFailure('No audio file selected'));
-      return;
-    }
+    debugPrint(result.toString());
     if (result?.files.first.path == null) {
       debugPrint('No audio file path found');
       emit(const MediaBottomSheetFailure('No audio file path found'));
@@ -73,7 +69,7 @@ class MediaBottomSheetCubit extends Cubit<MediaBottomSheetState> {
             .call(
               UploadMediaParams(
                 file: file,
-                type: MediaUploadType.audio,
+                type: type,
                 metadata: {},
               ),
             )
