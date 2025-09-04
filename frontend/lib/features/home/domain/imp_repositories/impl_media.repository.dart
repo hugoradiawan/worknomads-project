@@ -42,7 +42,12 @@ class MediaRepositoryImpl implements MediaRepository {
 
   @override
   Stream<BaseResponse<List<MediaModel>>> list(FetchMediaParams params) async* {
-    yield await mediaRemoteDataSource.fetchMedia(params);
+    yield await mediaLocalDataSource.fetchMedia();
+    final BaseResponse<List<MediaModel>> remoteResponse =
+        await mediaRemoteDataSource.fetchMedia(params);
+    if (remoteResponse.success && remoteResponse.data != null) {
+      yield remoteResponse;
+    }
   }
 
   @override

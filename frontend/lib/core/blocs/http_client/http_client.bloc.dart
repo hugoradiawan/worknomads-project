@@ -102,7 +102,6 @@ class HttpBloc extends HydratedBloc<HttpEvent, HttpState> {
       add(HttpErrorEvent('BASE_URL is not defined in .env file'));
       return;
     }
-    print('Using BASE_URL: $baseUrl');
 
     // Create Dio client with base configuration
     _client = Dio(

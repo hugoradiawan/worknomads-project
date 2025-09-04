@@ -26,6 +26,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       builder: (_) => const MediaBottomSheet(),
     );
     if (result == null) return;
+    await Future.delayed(const Duration(milliseconds: 500));
     loadMedia();
   }
 

@@ -3,6 +3,9 @@ import 'package:dio/dio.dart' show Response, MultipartFile, FormData;
 import 'package:frontend/core/base_response.dart' show BaseResponse;
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart'
     show HttpBloc;
+import 'package:frontend/core/blocs/local_storage/events/local_storage.event.dart';
+import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart'
+    show LocalStorageBloc;
 import 'package:frontend/features/home/data/datasources/media_remote.datasource.dart'
     show MediaRemoteDataSource;
 import 'package:frontend/features/home/data/models/media.model.dart'
@@ -23,6 +26,7 @@ class MediaRemoteDataSourceImpl implements MediaRemoteDataSource {
         data: params.toJson(),
       );
       if (response?.statusCode == 200) {
+        LocalStorageBloc.i?.add(MediaListSave(data: response?.data));
         final List<dynamic> mediaList = response?.data['data'] is List
             ? response?.data['data']
             : [];
