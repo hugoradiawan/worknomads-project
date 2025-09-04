@@ -35,11 +35,13 @@ The application follows **Clean Architecture** principles with a **layered archi
 ### Core Components
 
 - **Core Layer**
+
   - `LocalStorageBloc` - Persistent data management
   - `HttpBloc` - Network client configuration
   - `LayeredContext` - Cross-layer service access
 
 - **Infrastructure Layer**
+
   - `UserBloc` - Authentication state management
   - `AppRouter` - Declarative routing with auth integration
   - `RouterCubit` - BLoC-wrapped navigation management
@@ -73,22 +75,41 @@ This project implements **Clean Architecture** principles, providing:
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/hugoradiawan/worknomads-project.git
    cd worknomads-project/frontend
    ```
 
 2. **Install dependencies**
+
    ```bash
    flutter pub get
    ```
 
-3. **Verify Flutter setup**
+3. **Configure environment variables**
+
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+
+   # Or create a new .env file with required variables
+   ```
+
+   Edit the `.env` file with your configuration:
+
+   ```properties
+   BASE_URL=http://10.0.2.2:8080/api/
+   ```
+
+4. **Verify Flutter setup**
+
    ```bash
    flutter doctor
    ```
 
-4. **Run the application**
+5. **Run the application**
+
    ```bash
    # Development mode
    flutter run
@@ -101,35 +122,74 @@ This project implements **Clean Architecture** principles, providing:
    flutter run -d ios
    ```
 
+### Environment Configuration
+
+The application uses environment variables for configuration management. Create a `.env` file in the project root with the following variables:
+
+| Variable   | Description                    | Example                     | Required |
+| ---------- | ------------------------------ | --------------------------- | -------- |
+| `BASE_URL` | API base URL for HTTP requests | `http://10.0.2.2:8080/api/` | ✅ Yes   |
+
+#### Environment Setup Notes
+
+- **Android Emulator**: Use `10.0.2.2` to access localhost from Android emulator
+- **iOS Simulator**: Use `127.0.0.1` or `localhost` for iOS simulator
+- **Physical Device**: Use your computer's IP address on the same network
+- **Production**: Replace with your actual API server URL
+
+#### Example Configurations
+
+**Development (Android Emulator):**
+
+```properties
+BASE_URL=http://10.0.2.2:8080/api/
+```
+
+**Development (Physical Device):**
+
+```properties
+BASE_URL=http://192.168.1.100:8080/api/
+```
+
+**Production:**
+
+```properties
+BASE_URL=https://api.worknomads.com/api/
+```
+
 ## 📂 Project Structure
 
 ```
-lib/
-├── core/                                # Foundation layer
-│   ├── blocs/                           # Core state management
-│   │   ├── http_client/                 # HTTP client BLoC
-│   │   ├── local_storage/               # Storage management BLoC
-│   │   └── app_bloc_observer.dart       # Global BLoC monitoring
-│   ├── router/                          # Navigation system
-│   │   ├── app_router.dart              # Route configuration
-│   │   └── router_cubit.dart            # Router state management
-│   ├── widgets/                         # Core provider widgets
-│   │   ├── core_provider.dart           # Core services provider
-│   │   └── infrastructure_provider.dart # Infrastructure services
-│   ├── layered_context.dart             # Cross-layer access utility
-│   ├── typedef.dart                     # Common type definitions
-│   └── usecase.dart                     # Use case abstractions
-├── features/                            # Feature-specific modules
-│   ├── home/                            # Home feature
-│   │   └── presentation/                # UI components
-│   └── login/                           # Authentication feature
-│       └── presentation/                # Login/Register pages
-├── shared/                              # Shared resources
-│   ├── blocs/                           # Shared state management
-│   ├── data/                            # Data models and repositories
-│   └── domain/                          # Business entities
-├── app.dart                             # Application widget
-└── main.dart                            # Application entry point
+frontend/
+├── .env                                         # Environment configuration
+├── lib/
+│   ├── core/                                    # Foundation layer
+│   │   ├── blocs/                               # Core state management
+│   │   │   ├── http_client/                     # HTTP client BLoC
+│   │   │   ├── local_storage/                   # Storage management BLoC
+│   │   │   └── app_bloc_observer.dart           # Global BLoC monitoring
+│   │   ├── router/                              # Navigation system
+│   │   │   ├── app_router.dart                  # Route configuration
+│   │   │   └── router_cubit.dart                # Router state management
+│   │   ├── widgets/                             # Core provider widgets
+│   │   │   ├── core_provider.dart               # Core services provider
+│   │   │   └── infrastructure_provider.dart     # Infrastructure services
+│   │   ├── layered_context.dart                 # Cross-layer access utility
+│   │   ├── typedef.dart                         # Common type definitions
+│   │   └── usecase.dart                         # Use case abstractions
+│   ├── features/                                # Feature-specific modules
+│   │   ├── home/                                # Home feature
+│   │   │   └── presentation/                    # UI components
+│   │   └── login/                               # Authentication feature
+│   │       └── presentation/                    # Login/Register pages
+│   ├── shared/                                  # Shared resources
+│   │   ├── blocs/                               # Shared state management
+│   │   ├── data/                                # Data models and repositories
+│   │   └── domain/                              # Business entities
+│   ├── app.dart                                 # Application widget
+│   └── main.dart                                # Application entry point
+├── pubspec.yaml                                 # Dependencies and metadata
+└── README.md                                    # Project documentation
 ```
 
 ### Clean Architecture Layers in Code
@@ -144,18 +204,23 @@ The project structure reflects **Clean Architecture** principles:
 ## 🔧 Technology Stack
 
 ### Core Technologies
+
 - **Flutter**: 3.35.2 - UI framework
 - **Dart**: Latest stable - Programming language
 
 ### State Management
+
 - **flutter_bloc**: BLoC pattern implementation
 - **hydrated_bloc**: State persistence
 
 ### Networking
+
 - **dio**: HTTP client
 
 ### Storage
+
 - **shared_preferences**: Local storage
 
 ### Navigation
+
 - **go_router**: Declarative routing
