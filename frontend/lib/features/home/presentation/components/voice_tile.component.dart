@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart'
     show StatelessWidget, Widget, Icon, Icons, Slider, ListTile, Card;
+import 'package:frontend/features/home/data/models/media.model.dart' show MediaModel;
 
 class VoiceTile extends StatelessWidget {
-  const VoiceTile({super.key});
+  const VoiceTile({super.key, required this.media});
+
+  final MediaModel media;
 
   @override
   Widget build(_) => Card(

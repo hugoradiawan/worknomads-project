@@ -3,7 +3,16 @@ import 'dart:io' show File;
 import 'package:frontend/core/typedef.dart' show Json;
 import 'package:frontend/core/usecase.dart' show Params;
 
-enum MediaUploadType { image, audio }
+enum MediaUploadType {
+  image,
+  audio;
+
+  static MediaUploadType? fromString(String? value) => switch (value) {
+    'image' => MediaUploadType.image,
+    'audio' => MediaUploadType.audio,
+    _ => null,
+  };
+}
 
 class UploadMediaParams extends Params {
   final File file;
@@ -19,5 +28,9 @@ class UploadMediaParams extends Params {
   @override
   List<Object?> get props => [file, type, metadata];
 
-  Json toJson() => {'file': file.path, 'media_type': type.name, 'metadata': metadata};
+  Json toJson() => {
+    'file': file.path,
+    'media_type': type.name,
+    'metadata': metadata,
+  };
 }
