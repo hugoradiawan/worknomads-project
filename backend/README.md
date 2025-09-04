@@ -90,7 +90,7 @@ backend/
    env\Scripts\activate
 
    # Install dependencies
-   pip install django django-environ djangorestframework djangorestframework-simplejwt celery django-celery-results environ
+   pip install django django-environ djangorestframework djangorestframework-simplejwt environ
 
    # Set up environment variables
    cp .env.dev.example .env.dev
@@ -112,7 +112,7 @@ backend/
    env\Scripts\activate
 
    # Install dependencies
-   pip install django django-environ djangorestframework djangorestframework-simplejwt celery django-celery-results environ
+   pip install django django-environ djangorestframework djangorestframework-simplejwt environ
 
    # Set up environment variables
    cp .env.dev .env.dev.local
