@@ -122,6 +122,7 @@ migrate_working_dir/
 .pub/
 **/build/
 **/coverage/
+*.env
 
 # Symbolication related
 app.*.symbols
