@@ -1,40 +1,44 @@
+import 'package:equatable/equatable.dart';
 import 'package:frontend/core/usecase.dart' show BaseResponse;
 import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 class HttpInitial extends HttpState {
-  HttpInitial({super.token});
+  const HttpInitial({super.token});
 }
 
 class HttpSettingUp extends HttpState {
-  HttpSettingUp({super.token});
+  const HttpSettingUp({super.token});
 }
 
 class HttpIsReady extends HttpState {
-  HttpIsReady({super.token});
+  const HttpIsReady({super.token});
 }
 
 class HttpLoading extends HttpState {
-  HttpLoading({super.token});
+  const HttpLoading({super.token});
 }
 
 class HttpLoaded extends HttpState {
-  HttpLoaded({super.token});
+  const HttpLoaded({super.token});
 }
 
 class HttpSuccess<T> extends HttpState {
   final BaseResponse<T> response;
 
-  HttpSuccess(this.response, {super.token});
+  const HttpSuccess(this.response, {super.token});
 }
 
 class HttpError extends HttpState {
   final String message;
 
-  HttpError(this.message, {super.token});
+  const HttpError(this.message, {super.token});
 }
 
-abstract class HttpState {
+abstract class HttpState extends Equatable {
   final Token? token;
 
   const HttpState({this.token});
+
+  @override
+  List<Object?> get props => [token];
 }

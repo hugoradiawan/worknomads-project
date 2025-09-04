@@ -1,5 +1,5 @@
-import 'package:frontend/features/home/domain/responses/media.response.dart' show MediaResponse;
+import 'package:frontend/features/home/data/models/media.model.dart' show MediaModel;
 
 abstract class MediaLocalDataSource {
-  Future<List<MediaResponse>> fetchMedia();
+  Future<List<MediaModel>> fetchMedia();
 }

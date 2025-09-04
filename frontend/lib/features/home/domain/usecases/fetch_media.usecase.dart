@@ -1,11 +1,11 @@
 import 'package:frontend/core/usecase.dart'
     show Failure, UseCase, BaseResponse, ServerFailure;
+import 'package:frontend/features/home/data/models/media.model.dart' show MediaModel;
 import 'package:frontend/features/home/data/repositories/media.repository.dart' show MediaRepository;
 import 'package:frontend/features/home/domain/imp_repositories/impl_media.repository.dart' show MediaRepositoryImpl;
 import 'package:frontend/features/home/domain/params/fetch_media.params.dart' show FetchMediaParams;
-import 'package:frontend/features/home/domain/responses/media.response.dart';
 
-class FetchMediaUseCase extends UseCase<MediaResponse, FetchMediaParams> {
+class FetchMediaUseCase extends UseCase<List<MediaModel>, FetchMediaParams> {
   final MediaRepository userRepository;
 
   static FetchMediaUseCase? _instance;
@@ -21,7 +21,7 @@ class FetchMediaUseCase extends UseCase<MediaResponse, FetchMediaParams> {
   }
 
   @override
-  Stream<({Failure? fail, BaseResponse<MediaResponse> ok})> call(
+  Stream<({Failure? fail, BaseResponse<List<MediaModel>> ok})> call(
     FetchMediaParams params,
   ) async* {
     await for (final event in userRepository.list(params)) {

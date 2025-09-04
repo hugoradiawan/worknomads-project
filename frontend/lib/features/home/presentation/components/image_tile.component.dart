@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart'
     show StatelessWidget, Widget, BorderRadius, Image, BoxFit, ClipRRect, Card;
+import 'package:frontend/core/blocs/http_client/http_client.bloc.dart';
+import 'package:frontend/features/home/data/models/media.model.dart'
+    show MediaModel;
 
 class ImageTile extends StatelessWidget {
-  const ImageTile({super.key});
+  const ImageTile({super.key, required this.media});
+
+  final MediaModel media;
 
   @override
   Widget build(_) => Card(
@@ -10,7 +15,11 @@ class ImageTile extends StatelessWidget {
     child: ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: Image.network(
-        'https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4',
+        '${HttpBloc.i!.client.options.baseUrl}media/${media.id}/',
+        headers: {
+          if (HttpBloc.i?.state.token?.accessToken != null)
+            'Authorization': 'Bearer ${HttpBloc.i!.state.token?.accessToken}',
+        },
         fit: BoxFit.fitHeight,
       ),
     ),

@@ -27,14 +27,14 @@ class HttpBloc extends HydratedBloc<HttpEvent, HttpState> {
   late final Dio _client;
 
   HttpBloc() : super(HttpInitial()) {
-    on<HttpSetup>((event, emit) => emit(HttpSettingUp()));
+    on<HttpSetup>((event, emit) => emit(HttpSettingUp(token: state.token)));
     on<HttpResponseEvent>((event, emit) {
       emit(HttpSuccess(event.response, token: state.token));
     }, transformer: concurrent());
     on<HttpErrorEvent>((event, emit) {
       emit(HttpError(event.message, token: state.token));
     });
-    on<HttpReady>((event, emit) => emit(HttpLoaded()));
+    on<HttpReady>((event, emit) => emit(HttpLoaded(token: state.token)));
     on<HttpSetToken>((event, emit) {
       emit(HttpInitial(token: event.token));
     });

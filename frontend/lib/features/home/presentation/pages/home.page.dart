@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart'
-    show AppBar, FloatingActionButton, IconButton, Icons, Scaffold;
+    show
+        AppBar,
+        FloatingActionButton,
+        IconButton,
+        Icons,
+        Scaffold,
+        CircularProgressIndicator;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/features/home/data/models/media.model.dart'
+    show MediaModel;
 import 'package:frontend/features/home/presentation/blocs/homepage.cubit.dart';
 import 'package:frontend/features/home/presentation/blocs/homepage.state.dart';
 import 'package:frontend/features/home/presentation/components/image_tile.component.dart'
     show ImageTile;
-import 'package:frontend/features/home/presentation/components/voice_tile.component.dart'
-    show VoiceTile;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,7 +34,19 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(children: [ImageTile(), VoiceTile()]),
+      body: BlocSelector<HomePageCubit, HomePageState, List<MediaModel>>(
+        selector: (state) => state.mediaList,
+        builder: (context, mediaList) {
+          if (mediaList.isNotEmpty) {
+            return ListView(
+              children: mediaList
+                  .map((media) => ImageTile(media: media))
+                  .toList(),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
       floatingActionButton: BlocBuilder<HomePageCubit, HomePageState>(
         buildWhen: (_, _) => false,
         builder: (context, _) => FloatingActionButton(

@@ -14,8 +14,6 @@ import 'package:frontend/features/home/domain/imp_datasources/impl_media_remote.
 import 'package:frontend/features/home/domain/params/fetch_media.params.dart'
     show FetchMediaParams;
 import 'package:frontend/features/home/domain/params/upload_media.params.dart';
-import 'package:frontend/features/home/domain/responses/media.response.dart'
-    show MediaResponse;
 
 class MediaRepositoryImpl implements MediaRepository {
   final MediaRemoteDataSource mediaRemoteDataSource;
@@ -43,7 +41,7 @@ class MediaRepositoryImpl implements MediaRepository {
   }
 
   @override
-  Stream<BaseResponse<MediaResponse>> list(FetchMediaParams params) async* {
+  Stream<BaseResponse<List<MediaModel>>> list(FetchMediaParams params) async* {
     yield await mediaRemoteDataSource.fetchMedia(params);
   }
 
