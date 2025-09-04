@@ -1,7 +1,10 @@
+import os
 from revproxy.views import ProxyView
 
+
 class AuthProxyView(ProxyView):
-    upstream = 'http://127.0.0.1:8001'
+    upstream = f'http://127.0.0.1:{os.getenv("AUTH_PORT", "8001")}'
+
 
 class BackendProxyView(ProxyView):
-    upstream = 'http://127.0.0.1:8000'
+    upstream = f'http://127.0.0.1:{os.getenv("BACKEND_PORT", "8000")}'

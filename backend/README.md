@@ -134,7 +134,12 @@ backend/
    env\Scripts\activate
 
    # Install dependencies
-   pip install django
+   pip install django django-revproxy python-dotenv
+
+   # Set up environment variables
+   # Create .env file with:
+   # AUTH_PORT=8900
+   # BACKEND_PORT=8000
 
    # Run migrations
    python manage.py migrate
@@ -179,6 +184,7 @@ Each service runs on a different port to avoid conflicts:
 
 - **Django**: Web framework
 - **Django REST Framework**: API development
+- **Django Revproxy**: Reverse proxy for API gateway
 - **SQLite**: Development database
 - **Python**: Programming language
 
@@ -190,6 +196,7 @@ Each service runs on a different port to avoid conflicts:
 
 - **Django Management Commands**: Database migrations
 - **Environment Variables**: Configuration management
+- **Python-dotenv**: Environment variable loading
 - **Virtual Environments**: Dependency isolation
 
 ## Environment Configuration
@@ -213,6 +220,13 @@ SECRET_KEY=your-secret-key
 DATABASE_URL=sqlite:///db.sqlite3
 MEDIA_ROOT=media/
 UPLOAD_ROOT=uploaded/
+```
+
+### Gateway (.env)
+
+```env
+AUTH_PORT=8001
+BACKEND_PORT=8000
 ```
 
 ### Database Management
