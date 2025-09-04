@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart'
-    show
-        StatelessWidget,
-        Scaffold,
-        Widget,
-        Text,
-        EdgeInsets,
-        InputDecoration,
-        SizedBox,
-        AppBar,
-        MainAxisAlignment,
-        OutlineInputBorder,
-        TextField,
-        ElevatedButton,
-        Column,
-        Padding;
+    show StatelessWidget, Scaffold, Widget, Text, EdgeInsets, InputDecoration, SizedBox, AppBar, MainAxisAlignment, OutlineInputBorder, TextField, ElevatedButton, Column, Padding, TextButton;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider, BlocBuilder;
 import 'package:frontend/features/login/presentation/blocs/register_cubit/register.cubit.dart'
     show RegisterCubit;
 import 'package:frontend/features/login/presentation/blocs/register_cubit/register.state.dart'
     show RegisterState;
+import 'package:go_router/go_router.dart' show GoRouter;
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
-  Widget build(_) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Register')),
     body: BlocProvider<RegisterCubit>(
       create: (_) => RegisterCubit(),
@@ -107,11 +94,15 @@ class RegisterPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 4),
+              TextButton(
+                onPressed: () => GoRouter.of(context).go('/login'),
+                child: const Text('Already have an account? Login'),
+              ),
               SizedBox(
                 width: double.infinity,
                 child: BlocBuilder<RegisterCubit, RegisterState>(
                   builder: (context, _) => ElevatedButton(
-                    onPressed: BlocProvider.of<RegisterCubit>(context).register,
+                    onPressed: () => BlocProvider.of<RegisterCubit>(context).register(context),
                     child: const Text('Register'),
                   ),
                 ),

@@ -66,7 +66,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         '/auth/register',
         data: params.toJson(),
       );
-      if (response?.statusCode == 200) {
+      if (response?.statusCode == 201) {
         final RegisterResponse? registerResponse = RegisterResponse.fromJson(
           response!.data,
         );

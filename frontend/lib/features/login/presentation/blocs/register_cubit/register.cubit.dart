@@ -1,11 +1,18 @@
+import 'dart:async' show StreamSubscription;
+
+import 'package:flutter/material.dart' show BuildContext;
 import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
 import 'package:frontend/features/login/domain/params/register.params.dart' show RegisterParams;
 import 'package:frontend/features/login/presentation/blocs/register_cubit/register.state.dart'
     show RegisterChange, RegisterLoading, RegisterState, RegisterInitial;
 import 'package:frontend/shared/blocs/user.bloc.dart' show UserBloc;
 import 'package:frontend/shared/blocs/user.event.dart' show RegisterFetch;
+import 'package:frontend/shared/blocs/user.state.dart' show UserState, RegisterFetched, RegisterFailed;
+import 'package:go_router/go_router.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
+  StreamSubscription<UserState>? _userStateSubscription;
+
   bool isConfirmPasswordValid(String password, String confirmPassword) {
     return password == confirmPassword;
   }
@@ -67,7 +74,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     state.confirmPasswordController.addListener(emitLatest);
   }
 
-  void register() async {
+  void register(BuildContext context) async {
     final email = state.emailController.text;
     final username = state.usernameController.text;
     final password = state.passwordController.text;
@@ -92,6 +99,21 @@ class RegisterCubit extends Cubit<RegisterState> {
         confirmPasswordController: state.confirmPasswordController,
       ),
     );
+
+    _userStateSubscription?.cancel();
+    _userStateSubscription = UserBloc.i.stream.listen((userState) {
+      if (userState is RegisterFetched) {
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (context.mounted) {
+              context.go('/login');
+            }
+          });
+        _userStateSubscription?.cancel();
+      } else if (userState is RegisterFailed) {
+        _userStateSubscription?.cancel();
+      }
+    });
+
     UserBloc.i.add(
       RegisterFetch(
         RegisterParams(
@@ -105,8 +127,11 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   @override
   Future<void> close() {
+    _userStateSubscription?.cancel();
     state.emailController.dispose();
     state.passwordController.dispose();
+    state.usernameController.dispose();
+    state.confirmPasswordController.dispose();
     return super.close();
   }
 }

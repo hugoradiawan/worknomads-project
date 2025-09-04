@@ -57,9 +57,7 @@ class UserBloc extends HydratedBloc<UserEvent, UserState> {
     });
     on<RegisterFetch>((event, emit) async {
       await for (final result in RegisterUseCase().call(event.params)) {
-        if (result.fail == null &&
-            result.ok.success &&
-            result.ok.data != null) {
+        if (result.fail == null && result.ok.success) {
           emit(RegisterFetched());
         } else {
           emit(const RegisterFailed());
