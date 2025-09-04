@@ -6,10 +6,9 @@ import 'package:frontend/features/login/domain/imp_repositories/imp_user.reposit
     show UserRepositoryImpl;
 import 'package:frontend/features/login/domain/params/refresh_token.params.dart'
     show RefreshTokenParams;
-import 'package:frontend/features/login/domain/responses/refresh.response.dart'
-    show RefreshResponse;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
-class RefreshUseCase extends UseCase<RefreshResponse, RefreshTokenParams> {
+class RefreshUseCase extends UseCase<Token, RefreshTokenParams> {
   final UserRepository userRepository;
 
   static RefreshUseCase? _instance;
@@ -25,7 +24,7 @@ class RefreshUseCase extends UseCase<RefreshResponse, RefreshTokenParams> {
   }
 
   @override
-  Stream<({Failure? fail, BaseResponse<RefreshResponse> ok})> call(
+  Stream<({Failure? fail, BaseResponse<Token> ok})> call(
     RefreshTokenParams params,
   ) async* {
     await for (final event in userRepository.refreshToken(params)) {

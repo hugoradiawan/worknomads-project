@@ -1,15 +1,3 @@
-import 'dart:async' show Completer, StreamSubscription;
-
-import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
-    show
-        LocalRefreshResponseFetch;
-import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart';
-import 'package:frontend/core/blocs/local_storage/states/local_login_response.state.dart'
-    show
-        LocalRefreshResponseNotFound,
-        LocalRefreshResponseFetched;
-import 'package:frontend/core/blocs/local_storage/states/local_storage.state.dart'
-    show LocalStorageState;
 import 'package:frontend/core/usecase.dart';
 import 'package:frontend/features/login/data/datasources/user_local.datasource.dart'
     show UserLocalDataSource;
@@ -18,9 +6,9 @@ import 'package:frontend/features/login/domain/params/refresh_token.params.dart'
 import 'package:frontend/features/login/domain/params/register.params.dart';
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
-import 'package:frontend/features/login/domain/responses/refresh.response.dart';
 import 'package:frontend/features/login/domain/responses/register.response.dart'
     show RegisterResponse;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 class UserLocalDataSourceImpl implements UserLocalDataSource {
   static UserLocalDataSourceImpl? _instance;
@@ -43,67 +31,9 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<BaseResponse<RefreshResponse>> refreshToken(
+  Future<BaseResponse<Token>> refreshToken(
     RefreshTokenParams params,
   ) async {
-    final Completer<BaseResponse<RefreshResponse>> completer =
-        Completer<BaseResponse<RefreshResponse>>();
-    StreamSubscription<LocalStorageState>? subscription;
-
-    final stream = LocalStorageBloc.i?.stream;
-    if (stream == null) {
-      return BaseResponse<RefreshResponse>(
-        data: null,
-        message: 'Refresh token failed (LocalStorageBloc not found)',
-        statusCode: 404,
-        success: false,
-      );
-    }
-
-    try {
-      subscription = stream.listen((state) {
-        if (state is LocalRefreshResponseFetched) {
-          if (!completer.isCompleted) {
-            completer.complete(
-              BaseResponse<RefreshResponse>(
-                data: state.response,
-                message: 'local fetch successful',
-                statusCode: 200,
-                success: true,
-              ),
-            );
-          }
-        } else if (state is LocalRefreshResponseNotFound) {
-          if (!completer.isCompleted) {
-            completer.complete(
-              BaseResponse<RefreshResponse>(
-                data: null,
-                message: 'local fetch failed (Token not found)',
-                statusCode: 404,
-                success: false,
-              ),
-            );
-          }
-        }
-      });
-
-      LocalStorageBloc.i?.add(LocalRefreshResponseFetch());
-
-      return await completer.future;
-    } catch (e) {
-      if (!completer.isCompleted) {
-        completer.complete(
-          BaseResponse<RefreshResponse>(
-            data: null,
-            message: e.toString(),
-            statusCode: 500,
-            success: false,
-          ),
-        );
-      }
-      return completer.future;
-    } finally {
-      subscription?.cancel();
-    }
+    throw UnimplementedError();
   }
 }

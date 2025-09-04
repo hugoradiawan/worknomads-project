@@ -1,19 +1,3 @@
-import 'package:frontend/core/blocs/local_storage/events/local_storage.event.dart' show LocalStorageEvent;
-import 'package:frontend/features/login/domain/responses/refresh.response.dart' show RefreshResponse;
-import 'package:frontend/features/login/domain/responses/register.response.dart' show RegisterResponse;
+// import 'package:frontend/core/blocs/local_storage/events/local_storage.event.dart' show LocalStorageEvent;
+// import 'package:frontend/features/login/domain/responses/register.response.dart' show RegisterResponse;
 
-class LocalRegisterResponseFetch extends LocalStorageEvent {}
-
-class LocalRefreshResponseFetch extends LocalStorageEvent {}
-
-class LocalRegisterResponseSave extends LocalStorageEvent {
-  final RegisterResponse response;
-
-  LocalRegisterResponseSave(this.response);
-}
-
-class LocalRefreshResponseSave extends LocalStorageEvent {
-  final RefreshResponse response;
-
-  LocalRefreshResponseSave(this.response);
-}

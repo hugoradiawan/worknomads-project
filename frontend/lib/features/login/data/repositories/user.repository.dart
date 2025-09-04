@@ -6,13 +6,13 @@ import 'package:frontend/features/login/domain/params/register.params.dart'
     show RegisterParams;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
-import 'package:frontend/features/login/domain/responses/refresh.response.dart' show RefreshResponse;
 import 'package:frontend/features/login/domain/responses/register.response.dart' show RegisterResponse;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 abstract class UserRepository {
   Stream<BaseResponse<LoginResponse>> login(LoginParams params);
 
   Stream<BaseResponse<RegisterResponse>> register(RegisterParams params);
 
-  Stream<BaseResponse<RefreshResponse>> refreshToken(RefreshTokenParams params);
+  Stream<BaseResponse<Token>> refreshToken(RefreshTokenParams params);
 }

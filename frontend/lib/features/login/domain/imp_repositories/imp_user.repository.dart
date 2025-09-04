@@ -13,10 +13,9 @@ import 'package:frontend/features/login/domain/params/refresh_token.params.dart'
 import 'package:frontend/features/login/domain/params/register.params.dart';
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
-import 'package:frontend/features/login/domain/responses/refresh.response.dart'
-    show RefreshResponse;
 import 'package:frontend/features/login/domain/responses/register.response.dart'
     show RegisterResponse;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource userRemoteDataSource;
@@ -54,7 +53,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<BaseResponse<RefreshResponse>> refreshToken(
+  Stream<BaseResponse<Token>> refreshToken(
     RefreshTokenParams params,
   ) async* {
     yield await userRemoteDataSource.refreshToken(params);

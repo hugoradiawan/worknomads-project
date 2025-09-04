@@ -71,9 +71,9 @@ class UserBloc extends HydratedBloc<UserEvent, UserState> {
         if (result.fail == null &&
             result.ok.success &&
             result.ok.data != null) {
-          emit(RefreshFetched(token: result.ok.data?.token));
+          emit(RefreshFetched(user: state.user, token: result.ok.data));
         } else {
-          emit(const RefreshFailed());
+          emit(RefreshFailed(user: state.user, token: state.token));
         }
       }
     });

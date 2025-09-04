@@ -1,8 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/core/blocs/http_client/http_client.bloc.dart';
-import 'package:frontend/core/blocs/local_storage/events/local_users.event.dart'
-    show LocalRegisterResponseSave, LocalRefreshResponseSave;
-import 'package:frontend/core/blocs/local_storage/local_storage.bloc.dart';
 import 'package:frontend/core/usecase.dart' show BaseResponse;
 import 'package:frontend/features/login/data/datasources/user_remote.datasource.dart'
     show UserRemoteDataSource;
@@ -13,10 +10,9 @@ import 'package:frontend/features/login/domain/params/register.params.dart'
     show RegisterParams;
 import 'package:frontend/features/login/domain/responses/login.response.dart'
     show LoginResponse;
-import 'package:frontend/features/login/domain/responses/refresh.response.dart'
-    show RefreshResponse;
 import 'package:frontend/features/login/domain/responses/register.response.dart'
     show RegisterResponse;
+import 'package:frontend/shared/domain/entities/token.dart' show Token;
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   static UserRemoteDataSourceImpl? _instance;
@@ -74,7 +70,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         final RegisterResponse? registerResponse = RegisterResponse.fromJson(
           response!.data,
         );
-        LocalStorageBloc.i?.add(LocalRegisterResponseSave(registerResponse!));
         return registerResponse!;
       } else {
         return BaseResponse<RegisterResponse>(
@@ -97,22 +92,25 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<BaseResponse<RefreshResponse>> refreshToken(
+  Future<BaseResponse<Token>> refreshToken(
     RefreshTokenParams params,
   ) async {
     try {
       final Response<dynamic>? response = await HttpBloc.i?.client.post(
-        '/refreshtoken',
+        '/auth/refreshtoken',
         data: params.toJson(),
       );
       if (response?.statusCode == 200) {
-        final RefreshResponse? refreshResponse = RefreshResponse.fromJson(
-          response!.data,
+        return BaseResponse<Token>(
+          data: Token.fromJson(response?.data['data']),
+          message: response?.data['message'],
+          statusCode: response?.statusCode,
+          errorCode: response?.data['error_code'],
+          serverId: response?.data['server_id'],
+          success: response?.data['success'],
         );
-        LocalStorageBloc.i?.add(LocalRefreshResponseSave(refreshResponse!));
-        return refreshResponse!;
       } else {
-        return BaseResponse<RefreshResponse>(
+        return BaseResponse<Token>(
           data: null,
           message: response?.data['message'],
           statusCode: response?.statusCode,
@@ -122,7 +120,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         );
       }
     } catch (e) {
-      return BaseResponse<RefreshResponse>(
+      return BaseResponse<Token>(
         data: null,
         message: e.toString(),
         statusCode: 500,
